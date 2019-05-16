@@ -10,10 +10,10 @@ class Dispenduk_API
 
   function __construct()
   {
-      /*$this->api_key = '3a1445af14d6920df76b9001e75c95c47e1ecd0d';
-      $this->ip = '192.10.10.70:8082';*/
-      $this->api_key = '';
-      $this->ip = '';
+      $this->api_key = '3a1445af14d6920df76b9001e75c95c47e1ecd0d';
+      $this->ip = '192.10.10.70:8082';
+      //$this->api_key = '';
+      //$this->ip = '';
   }
 
   function get_data_ktp($nik, $format = 'json') {
