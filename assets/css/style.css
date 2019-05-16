@@ -1,0 +1,333 @@
+.hide {
+    display: none;
+}
+.docrt_theme {
+    background-color: #f1f1f1;
+}
+
+.docrt_theme .navbar-nav>li {
+    width: 100%;
+}
+
+
+.column-prgen_confid {
+    width: 15%;
+}
+
+table.docrt_tbl {
+    width: 100%;
+    display: inline-table;
+}
+
+.docrt_tbl th{
+    width: 25%;
+}
+
+.docrt_tbl input.half {
+    width: 39.5%;
+}
+
+.docrt_pemohon_box {
+    display: block;
+}
+.docrt_pemohon_box input[disabled=disabled],.docrt_pemohon_box select[disabled=disabled],.docrt_pemohon_box textarea[disabled=disabled] {
+    background-color: #E9EAEA;
+}
+.docrt_pemohon_box .d-hide {
+    display: none;
+}
+.docrt_pemohon_box.d-hide {
+    display: none;
+}
+
+.docrt_pemohon_box .headform-label {
+    color: #C9C9C9;
+    font-weight: 700;
+}
+
+.docrt_pemohon_box.docrt_tbl_pindah {
+    overflow: auto;
+    font-size: 12px;
+    background-color: #EEEEEE;
+    padding: 15px;
+}
+.docrt_pemohon_box.docrt_tbl_pindah input, .docrt_pemohon_box.docrt_tbl_pindah select{
+    height: 25px;
+    font-size: 12px;
+    width: 100%;
+    padding: 0;
+}
+.docrt_pemohon_box .docrt_side_input {
+    width: 100px;
+    padding: 7px;
+    margin-left: 4px;
+}
+tr.strip/*:nth-child(odd)*/ {
+    background-color: #ECECEC;
+    color: #8F8F8F;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+tr.strip td {
+    padding: 3px;
+}
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    opacity:  0.5;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+
+   opacity:  0.5;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+
+   opacity:  0.5;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    opacity:  0.5;
+}
+
+/*BUTTON*/
+.button-fullwidth {
+    margin-top: 10px!important;
+    text-align: center;
+    width: 100%;
+}
+/*PENGIKUT*/
+.docrt_pemohon_box.docrt_tbl_pindah select.pengikut_jk {
+    width: 35px;
+}
+/*.docrt_pemohon_box.docrt_tbl_pindah input.pengikut_pend {
+    width: 40px;
+}*/
+/*.docrt_pemohon_box.docrt_tbl_pindah input.pengikut_ket {
+    width: 50px;
+}*/
+.docrt_pemohon_box.docrt_tbl_pindah input.pengikut_tgl {
+    width: 120px;
+}
+.docrt_pemohon_box.docrt_tbl_pindah input.pengikut_nama {
+    width: 190px;
+}
+
+/*LAPORAN TABLE*/
+.laporan-tbl td {
+    padding-left: 20px!important;
+    vertical-align: middle!important;
+}
+
+
+
+.ajaxApi {
+    border: 1px solid #7ddca8!important;
+    background: #deffed!important;
+}
+
+.api_msg {
+  color: white;
+  background: #f45246;
+  font-size: 12px;
+  padding: 0px 6px 2px;
+  /* border-radius: 5px; */
+  margin: 1px;
+  display: none;
+}
+
+.navbar-nav.mr-auto {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+}
+.navbar-nav.mr-auto .nav-link {
+    padding-right: .5rem;
+    padding-left: .5rem;
+}
+/*===========================================================
+*
+*  FRONT END
+*
+* ============================================================*/
+.list-group.docrt_type_surat_box {
+    margin-bottom: 0;
+    list-style: none;
+    margin: 0;
+}
+
+.list-group.docrt_type_surat_box label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 0px;
+    width: 100%;
+    padding: 8px 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.list-group.docrt_type_surat_box .list-group-item {
+    padding: 0;
+    margin-bottom: 5px;
+    background-color: #ffffff;
+    border: 1px solid #f3f3f3;
+    color: #6b6b6b;
+}
+
+.list-group.docrt_type_surat_box > li.current > a.current:after {
+    right: 0;
+    border: solid 8px transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-right-color: #f1f1f1;
+    top: 50%;
+    margin-top: -8px;
+}
+
+#docrt_user_frontend .navbar-inverse {
+    border-radius: 0;
+}
+
+#docrt_user_frontend .table>tbody>tr>td,
+#docrt_user_frontend .table>tbody>tr>th,
+#docrt_user_frontend .table>tfoot>tr>td,
+#docrt_user_frontend .table>tfoot>tr>th,
+#docrt_user_frontend .table>thead>tr>td,
+#docrt_user_frontend .table>thead>tr>th {
+    border-top: 0;
+}
+
+#docrt_user_frontend .list-group-item.docrt-hover, #docrt_user_frontend .list-group-item.docrt-hover:focus, #docrt_user_frontend .list-group-item.docrt-hover:hover {
+    text-shadow: 0 -1px 0 #286090;
+    background-image: -webkit-linear-gradient(top,#337ab7 0,#2b669a 100%);
+    background-image: -o-linear-gradient(top,#337ab7 0,#2b669a 100%);
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#337ab7),to(#2b669a));
+    background-image: linear-gradient(to bottom,#337ab7 0,#2b669a 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff337ab7', endColorstr='#ff2b669a', GradientType=0);
+    background-repeat: repeat-x;
+    border-color: #2b669a;
+}
+
+#docrt_user_frontend .list-group-item.docrt-hover, #docrt_user_frontend .list-group-item.docrt-hover:focus, #docrt_user_frontend .list-group-item.docrt-hover:hover {
+    z-index: 2;
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #337ab7;
+}
+
+#docrt_user_frontend .docrt_nosurat {
+    display: none;
+}
+
+#docrt_user_frontend .docrt_inputs {
+    margin:5px;
+    padding: 2px 7px;
+}
+
+#docrt_user_frontend label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+/*AUTO NIK*/
+input#docrt_form_nonik {
+    width: 80%;
+    display: inline-block;
+}
+button.nik_api_button_pengikut {
+    position: absolute;
+    top: 1px;
+    font-size: 10px;
+    padding: 3px 1px;
+    right: 0;
+}
+td.pengikut_nik_td {
+    position: relative;
+}
+/*END AUTO NIK*/
+
+.docrt-formrw ul {
+    padding: 0;
+}
+.docrt-formrw .pandding {
+    display: inline-block;
+    padding: .25em .4em;
+    font-size: 75%;
+    position: absolute;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    height: 100%;
+    min-width: 89px;
+    right: 0;
+    padding-top: 16px;
+    border-radius: 0 7px 7px 0;
+}
+
+.pandding a {
+    color: #fff;
+}
+.pandding a:hover, .pandding a:focus {
+    color: #e3e3e3;
+}
+.pandding.pandding-no {
+    background-color: #b9b9b9;
+}
+.pandding.pandding-yes {
+    background-color: #0275d8;
+}
+.docrt-formrw .list-group-item {
+    padding: 12px 100px 12px 20px;
+}
+
+input[type="text"], input[type="email"], input[type="url"], input[type="password"], input[type="search"], input[type="number"], input[type="tel"], input[type="range"], input[type="date"], input[type="month"], input[type="week"], input[type="time"], input[type="datetime"], input[type="datetime-local"], input[type="color"], textarea {
+    color: #666;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 6px 12px!important;
+}
+
+.form-control.docrt_type_surat_box_select {
+    margin-bottom: 20px;
+}
+
+
+.pagination a, .pagination span {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #337ab7;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.docrt-page {
+    margin-top: 20px;
+}
+.pagination a:focus, .pagination a:hover, .pagination span:focus, .pagination span:hover {
+    z-index: 2;
+    color: #23527c;
+    background-color: #eee;
+    border-color: #ddd;
+    text-decoration: none;
+}
+.pagination .current,
+.pagination span.current:focus,
+.pagination span.current:hover {
+    background-color: #0275d8;
+    color: #fff;
+}
+
+.docrt-log {
+    border-left: 1px solid #e3e3e3;
+}

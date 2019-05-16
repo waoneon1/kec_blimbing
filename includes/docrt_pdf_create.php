@@ -1,0 +1,296 @@
+<?php
+
+require_once('../../../../wp-load.php');
+require_once(__DIR__.'/../assets/tcpdf/tcpdf.php');
+global $wpdb, $post;
+class pdf extends TCPDF {
+
+    function letak($gambar){
+        //memasukkan gambar untuk header
+        $this->Image($gambar,18,23,25,25);
+        //menggeser posisi sekarang
+    }
+
+    function border_gambar($gambar){
+        //memasukkan gambar untuk header
+        $this->Image($gambar,18,10,25,25);
+        //menggeser posisi sekarang
+    }
+
+    function judul($teks1, $teks2, $teks4, $teks5){
+        
+        $this->Cell(10);
+        $this->SetFont('times','','19');
+        $this->Cell(0,5,$teks1,0,1,'C');
+
+        $this->Cell(10);
+        $this->SetFont('times','B','19');
+        $this->Cell(0,5,$teks2,0,1,'C');
+
+        $this->Cell(10);
+        $this->SetFont('timesI','I','13');
+        $this->Cell(0,5,$teks4,0,1,'C');
+
+        $this->Cell(10);
+        $this->Cell(0,8,$teks5,0,1,'C');
+    }
+
+    function garis(){
+        $this->SetLineWidth(1);
+        $this->Line(20,53,190,53);
+        $this->SetLineWidth(0);
+        $this->Line(20,54,190,54);
+    }
+
+    function garis2(){
+        $this->SetLineWidth(1);
+        $this->Line(15,35,195,35);
+        $this->SetLineWidth(0);
+        $this->Line(15,36,195,36);
+    }
+
+    function get_saksi($ID) {
+        // saksi 1
+        $args = array('p' => $ID, 'post_type' => 'docrt-perangkat');
+        $loop = new WP_Query($args);
+        $post = $loop->post;
+        $meta['saksi1'] = get_post_meta($post->ID, 'docrt_perangkat', true);
+        $meta['saksi1']['image'] = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'full',  false, '' );
+        $meta['saksi1']['date'] = $post->post_date;
+        wp_reset_postdata();
+
+        // saksi 2
+        $args2 = array('p' => $meta['saksi1']['jabatan_rw'] , 'post_type' => 'docrt-perangkat');
+        $loop2 = new WP_Query($args2);
+        $post2 = $loop2->post;
+        $meta['saksi2'] = get_post_meta($post2->ID, 'docrt_perangkat', true);
+        $meta['saksi2']['image'] = wp_get_attachment_image_src( get_post_thumbnail_id($post2->ID), 'full',  false, '' );
+        $meta['saksi2']['date'] = $post->post_date;
+        wp_reset_postdata();
+
+        return $meta;
+    }
+}
+
+// Prosess =============================================================
+// Prosess =============================================================
+// Prosess =============================================================
+
+include 'docrt_pdf_template.php';
+$pdf = new pdf(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+$post_tr = get_the_terms ($_GET['pid'],'surat' );
+
+// kondisi kusus saat skem dan skel
+if ($post_tr[0]->slug == 'skem' || $post_tr[0]->slug == 'skel') {
+    docrt_get_content_pdf2($pdf, $_GET['pid'], $post_tr);
+
+    // kondisi kusus saat skel
+    if ($post_tr[0]->slug == 'skel') {
+        docrt_skkel_content($pdf,$_GET['pid'],$post_tr);
+    }
+    // kondisi kusus saat skem
+    if ($post_tr[0]->slug == 'skem') {
+        docrt_skkem_content($pdf,$_GET['pid'],$post_tr);
+    }
+
+} else {
+    docrt_get_header_pdf($pdf,$_GET['pid'], $post_tr);
+    docrt_get_content_pdf($pdf, $_GET['pid'], $post_tr);
+
+    // kondisi kusus saat skp wawan
+    if ($post_tr[0]->slug == 'skp') {
+        $post_tr[0]->slug = 'skai';
+        $post_tr[0]->name = 'surat keterangan adat istiadat';
+        docrt_get_header_pdf($pdf,$_GET['pid'], $post_tr);
+        docrt_get_content_pdf($pdf, $_GET['pid'], $post_tr, 'skp');
+    }
+
+}
+
+$pdf->Output($post_tr[0]->name.time().'.pdf','I');
+
+// Prosess =============================================================
+// Prosess =============================================================
+// Prosess =============================================================
+
+function docrt_get_header_pdf($pdf,$postID, $post_term) {
+
+    $pdf->setPrintHeader(false);
+    $pdf->setPrintFooter(false);
+   // jika ada kontent surat yang perlu font size berbeda alter here
+    if ($post_term[0]->slug == 'skp' || $post_term[0]->slug == 'skp_m') {
+        $pdf->setCellHeightRatio(1.2);
+    } else {
+        $pdf->setCellHeightRatio(1.5);
+    }
+    $pdf->SetMargins(20, 23, 20, true);
+
+    //jika surat kematian dan surat kelahiran page landscape
+     if ($post_term[0]->slug == 'skem' || $post_term[0]->slug == 'skel') {
+        $pdf->AddPage('L', 'F4');
+    } else {
+        $pdf->AddPage('P', 'F4');
+    }
+
+    $pdf->letak('../assets/img/pemkot_mlg_logo.png');
+    $pdf->judul('PEMERINTAH KOTA MALANG', 'KECAMATAN '.strtoupper(docrt_dd('kec')),''.docrt_dd('alamat').' '.docrt_dd('telp').' - Malang Kode Pos '.docrt_dd('kpos'), '');
+    $pdf->garis();
+}
+
+function docrt_get_content_pdf($pdf, $postID, $post_term, $main_doc = '') {
+   $meta = get_post_meta($postID);
+   $pdf->SetFont('times','B','13');
+
+   if ($post_term[0]->slug == 'sku') {
+       $pdf->writeHTML('<strong style="text-align: center;">KEPUTUSAN CAMAT BLIMBING KOTA MALANG</strong>', true, false, false, false, '');
+   } else {
+        $pdf->writeHTML('<strong style="text-align: center;">'.strtoupper($post_term[0]->name).'</strong>', true, false, false, false, '');
+   }
+  
+
+   // jika ada kontent surat yang perlu font size berbeda alter here
+   if ($post_term[0]->slug == 'skp' || $post_term[0]->slug == 'skp_m') {
+       $pdf->SetFont('times','','11');
+   } else {
+       $pdf->SetFont('times','','12');
+   }
+
+    if ($post_term[0]->slug == 'sku') {
+        
+        $pdf->SetFont('times','','11');
+        $pdf->writeHTML('<p style="text-align: center; margin-bottom:20px;">'.'NOMOR: '.docrt_no_surat($post_term[0]->slug,$meta,$postID).'</p>', true, false, false, false, '');
+        $pdf->writeHTML('<strong style="text-align: center;">TENTANG</strong>', true, false, false, false, '');
+        $pdf->writeHTML('<strong style="text-align: center;">IZIN USAHA MIKRO</strong>', true, false, false, false, '');
+        $pdf->writeHTML('<p>&nbsp;</p>', true, false, false, false, '');
+        $kecToUpper = strtoupper(get_option('docrt_data_dasar')['kec']);
+        $pdf->writeHTML('<strong style="text-align: center;">CAMAT '.$kecToUpper.'</strong>', true, false, false, false, '');
+        $pdf->writeHTML('<p>&nbsp;</p>', true, false, false, false, '');
+        $pdf->setCellHeightRatio(1);
+    } else {
+        $pdf->writeHTML('<p style="text-align: center; margin-bottom:20px;">'.'Nomor: '.docrt_no_surat($post_term[0]->slug,$meta,$postID).'</p>', true, false, false, false, '');
+        $pdf->writeHTML('<p>&nbsp;</p>', true, false, false, false, '');
+    }
+
+   // <p> space margin ilangin
+   $tagvs = array('p' => array(0 => array('h' => 0, 'n' => 0), 1 => array('h' => 0, 'n'=> 0)));
+   $pdf->setHtmlVSpace($tagvs);
+
+   if ($main_doc === '') {
+       $param = docrt_pdf_template_form($post_term[0]->slug,$meta,$postID);
+   } else {
+       $param = docrt_pdf_template_form($main_doc,$meta,$postID);
+   }
+   $tbl = docrt_content_by_type($param,$meta,$post_term);
+
+   // footer
+   $tbl .= docrt_pdf_footer($meta,$postID,$post_term[0]->slug);
+
+   $pdf->SetCellPadding(0);
+   $pdf->writeHTML($tbl, true, false, false, false, '');
+}
+
+function docrt_get_content_pdf2($pdf, $postID, $post_term, $main_doc = '') {
+    $pdf->setPrintHeader(false);
+    $pdf->setPrintFooter(false);
+
+    if ($post_term[0]->slug == 'skel') {
+        $pdf->setCellHeightRatio(1.0);
+    } elseif ($post_term[0]->slug == 'skem') {
+        $pdf->setCellHeightRatio(1.2);
+    }
+
+    $pdf->SetMargins(10, 10, 10, true);
+
+    if ($post_term[0]->slug == 'skkel' || $post_term[0]->slug == 'skkem') {
+    } else {
+        // jika bukan skkel dan skkem jadikan landscape soalnya skkel dan skkem harus potrait dan butuh header
+        $pdf->AddPage('L', 'F4');
+    }
+
+    $meta = get_post_meta($postID);
+
+    // <p> space margin ilangin
+    $tagvs = array('p' => array(0 => array('h' => 0, 'n' => 0), 1 => array('h' => 0, 'n'=> 0)));
+    $pdf->setHtmlVSpace($tagvs);
+
+
+    if ($post_term[0]->slug == 'skel') {
+        $pdf->SetFont('times','','10.5');
+    } elseif ($post_term[0]->slug == 'skem') {
+        $pdf->SetFont('times','','11');
+    }
+
+    if ($main_doc === '') {
+        $param = docrt_pdf_template_form($post_term[0]->slug,$meta,$postID);
+    } else {
+        $param = docrt_pdf_template_form($main_doc,$meta,$postID);
+    }
+
+    //$param = docrt_pdf_template_form($post_term[0]->slug,$meta,$postID);
+    $tbl = docrt_content_by_type($param,$meta,$post_term,$pdf);
+
+
+    $pdf->SetCellPadding(0);
+    $pdf->writeHTML($tbl, true, false, false, false, '');
+}
+
+function docrt_content_by_type($param,$meta,$post_term,$pdf='') {
+    $slug = $post_term[0]->slug;
+    return call_user_func_array('docrt_'.$slug.'_content', array($param,$meta,$post_term));
+}
+
+// footer tandatangan in general
+function docrt_pdf_footer($meta,$postID,$type,$hspace='60',$nopelapor=true,$w1 = '30%',$w2 = '30%',$w3 = '43%') {
+
+     // Yang menandatangani dokumen
+    $ttd = docrt_who_give_ttd($meta['docrt_jenis_ttd'][0]);
+    $ygbersangkutan = (($nopelapor) ? 'Yang Bersangkutan' : '');
+    $nama = (($nopelapor) ? ucwords($meta['docrt_form_nama'][0]) : '');
+
+    $mengetahui_camat = '';
+    if ($type =='skai') {
+        $mengetahui_camat =
+        '<tr>
+            <td colspan="3">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="3"><span style="font-size:9px; text-align:center;">Mengetahui:<br/>CAMAT '.strtoupper(docrt_dd('kec')).'</span></td>
+        </tr>';
+    }
+    if ($type == 'sku') {
+        $hspace = 40;
+        $ygbersangkutan = $nama = '';
+    }
+
+    $align = ($nopelapor) ? 'center' : 'left';
+    $tbl .= '
+    <table cellspacing="0" cellpadding="1" border="0">
+        <tr style="font-size:11px;">
+            <td width="'.$w1.'"></td>
+            <td width="'.$w2.'"></td>
+            <td width="'.$w3.'" align="'.$align.'">Malang, '.get_the_date('',$postID).'</td>
+        </tr>
+        <tr>
+            <td>'.$ygbersangkutan.'</td>
+            <td></td>
+            <td align="'.$align.'">'.$ttd['jabatan'].'</td>
+        </tr>
+        <tr>
+            <td height="'.$hspace.'"></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>'.$nama.'</td>
+            <td> </td>
+            <td align="'.$align.'"><strong style="text-align: '.$align.'; text-decoration: underline; font-size:11px">'.$ttd['nama'].'</strong><br/>'.$ttd['kasi'] .'
+            '.$ttd['nip'].'
+            </td>
+        </tr>
+        '.$mengetahui_camat.'
+    </table>';
+
+    return $tbl;
+}
+
+
