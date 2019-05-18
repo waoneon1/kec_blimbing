@@ -75,7 +75,7 @@ class Dispenduk_API
 
   function call_ktp($nik, $format) {
     $url = 'http://'.$this->ip.'/ws/api/v3/ktp/nik/'.$nik.'/'.'key/'.$this->api_key.'/'.'format/'.$format;
-    //$url = 'http://192.10.10.70:8082/ws/api/v2/ktp/nik/3573032709930004/key/3a1445af14d6920df76b9001e75c95c47e1ecd0d/format/json';
+    //$url = 'http://192.10.10.70:8082/ws/api/v3/ktp/nik/3573032709930004/key/3a1445af14d6920df76b9001e75c95c47e1ecd0d/format/json';
     //$json = file_get_contents($url);
 
     //  Initiate curl
@@ -110,13 +110,14 @@ class Dispenduk_API
       $kec  = docrt_dd('kec');
       $kel  = docrt_dd('kel');
 
-      if ($kkel != $obj->KTP->NO_KEL) {
-        return json_decode('{"status":false,"message":"NIK tidak terdaftar di kelurahan '.$kel.'"}');
-      }
+      // Tidak menggunakan filter kelurahan dan kecamatan
+      // if ($kkel != $obj->KTP->NO_KEL) {
+      //   return json_decode('{"status":false,"message":"NIK tidak terdaftar di kelurahan '.$kel.'"}');
+      // }
 
-      if ($kkec != $obj->KTP->NO_KEC) {
-        return json_decode('{"status":false,"message":"NIK tidak terdaftar di kecamatan '.$kec.'"}');
-      }
+      // if ($kkec != $obj->KTP->NO_KEC) {
+      //   return json_decode('{"status":false,"message":"NIK tidak terdaftar di kecamatan '.$kec.'"}');
+      // }
     }
 
     return $obj;

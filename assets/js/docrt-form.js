@@ -129,6 +129,7 @@ console.log(cpt_type);
             'jenis': jenis,
             'i': i
         };
+        console.log(data);
         $.ajax({
             data: data,
             type: 'POST',
